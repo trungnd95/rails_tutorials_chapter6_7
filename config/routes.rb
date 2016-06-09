@@ -2,6 +2,8 @@ Chapter6::Application.routes.draw do
   root "static_pages#home"
   get "access/index"
   get "login" => "access#login"
+  post "post_login" => "access#attempt_login"
+  get 'logout'  => 'access#logout'
   post 'access/attempt_login'
   get "sessions/new"
   get "users/new"

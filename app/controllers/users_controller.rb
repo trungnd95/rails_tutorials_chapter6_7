@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :check_logged_in , :except=> [:new,:create]
   #index
   def index
   	@users = User.all 
@@ -15,7 +16,6 @@ class UsersController < ApplicationController
   #store data just created to database
   def create
   	@user = User.new user_params
-
     if @user.save
       flash[:success] = "Welcome to the Sample App!"
       redirect_to @user

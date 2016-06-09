@@ -6,7 +6,7 @@
 	<div class="container">
 		<div class="col-md-6 col-md-offset-3">
 		<hr/>
-	<%= form_for(:session, :action => 'attempt_login') do |f| %>
+	<%= form_for(:session, url: ) do |f| %>
 
       <%= f.label :email %>
       <%= f.email_field :email, class: 'form-control' %>
