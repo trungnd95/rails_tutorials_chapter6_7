@@ -65,4 +65,8 @@ class UsersController < ApplicationController
   def check_admin
   	redirect_to(root_url) unless current_user.admin?
   end
+
+  def send_email_activation
+  	UserMailer.account_activation(self).deliver_now
+  end
 end
