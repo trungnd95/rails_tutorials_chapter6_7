@@ -3,7 +3,7 @@ class AccessController < ApplicationController
   before_action :check_logged_in, :except => [:login, :attempt_login, :logout]
   def index
   	#display list of all users
-  	@users =  User.all
+  	@users =  User.paginate(page: params[:page], per_page: 5)
   	render 'users/index'
   end
 
@@ -22,16 +22,17 @@ class AccessController < ApplicationController
   		session[:user_id] =  authorize_user.id
   		session[:email] = authorize_user.email 
   		flash[:success] =  'You are logged in !'
- 		redirect_to(:action => 'index') 
+  		redirect_to(:action => 'index') 
   	else
-  		session[:user_id] =  nil
-  		session[:email] = nil
+  		
   		flash[:danger]	= 'Invalid email/password combination !!'
   		redirect_to(:action =>'login')
   	end
   end
 
   def logout
+  	session[:user_id] =  nil
+  	session[:email] = nil
   	flash[:success]	= 'Logout success !!'
   	redirect_to(:action =>'login')
   end

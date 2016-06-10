@@ -1,17 +1,35 @@
+<%= content_for :title do %>
+<title>All Users</title>
+<% end %>
+<%= content_for :page_title do %>
+All Users 
+<% end %>
+
 <table class="table table-hover">
 	<thead>
 		<tr>
 			<th>Name</th>
 			<th>Email</th>
+			<th>Action</th>
 		</tr>
 	</thead>
 	<tbody>
+		<%= will_paginate @users  %>
 		<% @users.each do |user|%>
 		<tr>
 			<td><%= user.name %></td>
 			<td><%= user.email %></td>
+			<td style="width:40%">
+				<%= link_to "Edit", edit_user_path(user.id), class: 'btn btn-primary' %>
+				<% if current_user.admin? && !current_user?(user) %>
+				<%= link_to "Delete", user_path(user.id),:method => :delete, :confirm => 'Are you sure ?', class: 'btn btn-danger' %>
+				<% end %>
+				
+			</td>
 		</tr>
 		<% end %>
 	</tbody>
 </table>
+
+
 

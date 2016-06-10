@@ -1,0 +1,19 @@
+<%= content_for :title do %>
+<title>Edit User</title>
+<% end %>
+<%= content_for :page_title do %>
+Edit User
+<% end %>
+
+<%=  form_for(@user) do |f|  %>
+<%= render 'shared/error_messages' %>
+<%= f.label :name %>
+<%= f.text_field :name, class: 'form-control', value: @user.name %>
+<%= f.label :email %>
+<%= f.email_field :email, class: 'form-control', value: @user.email %>
+<%= f.label :password %>
+<%= f.password_field :password , class: 'form-control' %>
+<%= f.label :password_confirmation , 'Confirmation' %>
+<%= f.password_field :password_confirmation , class: 'form-control' %>
+<%= f.submit "Save change ", class: 'btn btn-primary' %>
+<% end %>
