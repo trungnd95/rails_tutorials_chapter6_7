@@ -13,8 +13,8 @@
 
 ActiveRecord::Schema.define(version: 20160613061925) do
 
-  create_table "microposts", force: true do |t|
-    t.string   "title"
+  create_table "microposts", force: :cascade do |t|
+    t.string   "title",      limit: 255
     t.text     "content"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -24,17 +24,17 @@ ActiveRecord::Schema.define(version: 20160613061925) do
   add_index "microposts", ["user_id", nil], name: "index_microposts_on_user_id_and_create_at"
   add_index "microposts", ["user_id"], name: "index_microposts_on_user_id"
 
-  create_table "users", force: true do |t|
-    t.string   "name"
-    t.string   "email"
+  create_table "users", force: :cascade do |t|
+    t.string   "name",              limit: 255
+    t.string   "email",             limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "password_digest"
+    t.string   "password_digest",   limit: 255
     t.boolean  "admin"
-    t.string   "activation_digest"
-    t.boolean  "activated",         default: false
+    t.string   "activation_digest", limit: 255
+    t.boolean  "activated",                     default: false
     t.datetime "activated_at"
-    t.string   "reset_digest"
+    t.string   "reset_digest",      limit: 255
     t.datetime "reset_sent_at"
   end
 
