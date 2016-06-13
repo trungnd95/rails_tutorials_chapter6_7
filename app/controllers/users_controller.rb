@@ -4,12 +4,14 @@ class UsersController < ApplicationController
   before_action :check_admin , :only => [:destroy]
   #index
   def index
-  	@users = User.paginate(page: params[:page], per_page: 5)
+  	@users = User.where(:activated =>  true).paginate(page: params[:page], per_page: 5)
   	render :index
   end
   #view show
   def show 
-  	@user = User.find params[:id]
+  	@user_new = User.find params[:id]
+  	@microposts = @user_new.microposts.paginate(page: params[:page] , per_page: 5)
+  	@micropost = current_user.microposts.build 
   end 
   #view create 
   def new
@@ -19,16 +21,18 @@ class UsersController < ApplicationController
   def create
   	@user = User.new user_params
     if @user.save
-      flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
+    	UserMailer.account_activation(@user).deliver
+      flash[:success] = "Please confirm your email address to continute!"
+      redirect_to root_url
     else
+    	flash[:danger] = "Ooopppss !!! Some thing went wrong !!"
       render :new
     end
   end
 
   #edit user 
   def edit
-  	@user = User.find(params[:id]) 
+  	@user = User.find params[:id] 
   end
 
   #store data just edited to database
@@ -54,7 +58,8 @@ class UsersController < ApplicationController
   private
 	def user_params
 	  params.require(:user).permit :name, :email, :password,
-	                               :password_confirmation
+	                               :password_confirmation, :activation_digest,
+	                               :activated,:activated_at
 	end
 	
 	def correct_user

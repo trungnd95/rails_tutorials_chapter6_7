@@ -19,7 +19,16 @@ Chapter6::Application.configure do
   config.action_mailer.delivery_method = :test
   host = 'localhost:3000'
   config.action_mailer.default_url_options = { host: host, protocol: 'https' }
+  config.action_mailer.smtp_settings = {
+   address:              'smtp.gmail.com',
+   port:                 587,
+   # domain:               'example.com',
+   user_name:            'Trung',
+   password:             'Kiendet95',
+   authentication:       'plain',
+   enable_starttls_auto: true  
 
+ }
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
@@ -31,3 +40,4 @@ Chapter6::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 end
+

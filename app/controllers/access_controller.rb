@@ -19,10 +19,16 @@ class AccessController < ApplicationController
   		end
   	end
   	if authorize_user 
-  		session[:user_id] =  authorize_user.id
-  		session[:email] = authorize_user.email 
-  		flash[:success] =  'You are logged in !'
-  		redirect_to(:action => 'index') 
+  		if user.activated 
+	  		session[:user_id] =  authorize_user.id
+	  		session[:email] = authorize_user.email 
+	  		flash[:success] =  'You are logged in !'
+	  		redirect_to(:action => 'index') 
+	  	else
+	  		flash[:danger] =  'Please active your account by following instructions 
+	  		in the account confirmation email you received to preceed !!!'
+	  		redirect_to :login
+	  	end
   	else
   		
   		flash[:danger]	= 'Invalid email/password combination !!'

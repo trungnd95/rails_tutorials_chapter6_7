@@ -14,20 +14,24 @@ All Users
 		</tr>
 	</thead>
 	<tbody>
-		<%= will_paginate @users  %>
+		
 		<% @users.each do |user|%>
 		<tr>
-			<td><%= user.name %></td>
-			<td><%= user.email %></td>
-			<td style="width:40%">
-				<%= link_to "Edit", edit_user_path(user.id), class: 'btn btn-primary' %>
+			<td style="width:33%"><%= link_to user.name , user %></td>
+			<td style="width:33%" ><%= user.email %></td>
+			<td style="width:33%">
+				<%= link_to 'Detail' , user ,class: 'btn btn-info' %>
+				<% if user.id == current_user.id %>
+					<%= link_to "Edit", edit_user_path(user.id), class: 'btn btn-primary' %>
+				<% end %>
 				<% if current_user.admin? && !current_user?(user) %>
-				<%= link_to "Delete", user_path(user.id),:method => :delete, :confirm => 'Are you sure ?', class: 'btn btn-danger' %>
+				<%= link_to "Delete", user_path(user.id), method: :delete, :confirm => 'Are you sure ?', class: 'btn btn-danger' %>
 				<% end %>
 				
 			</td>
 		</tr>
 		<% end %>
+		<%= will_paginate @users  %>
 	</tbody>
 </table>
 
