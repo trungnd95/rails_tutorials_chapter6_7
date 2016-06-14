@@ -1,5 +1,13 @@
 class User < ActiveRecord::Base
 	has_many :microposts, dependent: :destroy
+	has_many :active_relationships , class_name: "Relationship",
+									foreign_key: "follower_id",
+									dependent: :destroy
+	has_many :passive_relationships, class_name: "Relationship",
+									foreign_key: "followed_id",
+									dependent: :destroy									
+	has_many :following, through: :active_relationships, source: :followed									
+	has_many :followers, through: :passive_relationships, source: :follower
 	attr_accessor :remember_token, :activation_token
 	before_create :confirmation_token
 	before_save {self.email = email.downcase}
@@ -10,7 +18,6 @@ class User < ActiveRecord::Base
 			uniqueness: {case_sensitive: false}
 	has_secure_password
 	validates :password, presence: true, length: {minimum: 6}
-	private 
 	# Creates and assigns the activation token and digest.
  #    def create_activation_digest
  #      self.activation_token  = User.new_token
@@ -31,7 +38,18 @@ class User < ActiveRecord::Base
 	#   	end
 	# end
 	
-	public 
+	#follows a user 
+	def follow(other_user)
+		active_relationships.create(followed_id: other_user.id)
+	end
+	#unfollow a user 
+	def unfollow(other_user)
+		active_relationships.find_by(followed_id: other_user.id).destroy
+	end
+	# Check if current user following other user .Return true if following
+	def following?(other_user)
+		following.include?(other_user)
+	end
 	def create_reset_digest
 		if self.reset_digest.blank?
 			self.reset_digest = SecureRandom.urlsafe_base64.to_s

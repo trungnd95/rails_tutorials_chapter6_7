@@ -54,6 +54,21 @@ class UsersController < ApplicationController
   	redirect_to(:action => 'index')
   end
 
+  #list following users 
+  def following 
+  	@title = 'Followings'
+  	@fo_user = User.find(params[:id])
+  	@users =  @fo_user.following.paginate(page: params[:page] , per_page: 5)
+  	render 'show_follow'
+  end
+
+  #list followed users 
+  def followers
+  	@title = 'Followers'
+  	@fo_user  = User.find(params[:id])
+  	@users = @fo_user.followers.paginate(page: params[:page], per_page: 5)
+  	render 'show_follow'
+  end
   #strong method
   private
 	def user_params
